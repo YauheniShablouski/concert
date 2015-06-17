@@ -1,0 +1,94 @@
+CREATE DATABASE `concert` ;
+use `concert`;
+
+CREATE TABLE `concert_props` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ticket_price` int(10) DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
+  `number_of_songs` int(10) NOT NULL,
+  `number_of_songs_to_choose` int(10) NOT NULL,
+  `number_of_tickets` int(10) DEFAULT NULL,
+  `start_voting` datetime NOT NULL,
+  `finish_voting` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE `concert_songs` (
+  `song_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `concert_id` int(10) unsigned NOT NULL,
+  `song` varchar(100) NOT NULL,
+  PRIMARY KEY (`song_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE `users` (
+  `username` varchar(45) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  `enabled` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `user_roles` (
+  `user_role_id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) NOT NULL,
+  `ROLE` varchar(45) NOT NULL,
+  PRIMARY KEY (`user_role_id`),
+  UNIQUE KEY `uni_username_role` (`ROLE`,`username`),
+  KEY `fk_username_idx` (`username`),
+  CONSTRAINT `fk_username` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `votes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `concert_id` int(10) unsigned NOT NULL,
+  `username` varchar(45) NOT NULL,
+  `song` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+INSERT INTO `concert`.`users`
+(`username`,
+`name`,
+`password`,
+`enabled`)
+VALUES
+('admin',
+'admin',
+'admin123',
+1);
+
+INSERT INTO `concert`.`users`
+(`username`,
+`name`,
+`password`,
+`enabled`)
+VALUES
+('user',
+'user',
+'user123',
+1);
+
+INSERT INTO `concert`.`user_roles`
+(`username`,
+`ROLE`)
+VALUES
+('admin',
+'ROLE_ADMIN');
+
+INSERT INTO `concert`.`user_roles`
+(`username`,
+`ROLE`)
+VALUES
+('admin',
+'ROLE_USER');
+
+INSERT INTO `concert`.`user_roles`
+(`username`,
+`ROLE`)
+VALUES
+('user',
+'ROLE_USER');
+
+
+
